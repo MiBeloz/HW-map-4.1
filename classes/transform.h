@@ -1,11 +1,11 @@
 #pragma once
 
-#include"shape.h"
+#include "shape.h"
 
 
 class transform {
 public:
-	transform(const Shape& sh);
+	transform(const Shape& sh) : shape(sh) {}
 	Shape shift(int m, int n, int k);
 	Shape scaleX(int a);
 	Shape scaleY(int d);
