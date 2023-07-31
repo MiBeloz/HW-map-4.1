@@ -1,13 +1,129 @@
-#define _USE_MATH_DEFINES
+﻿#define _USE_MATH_DEFINES
 
 #include "shape.h"
 
-//Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, int _x3, int _y3, int _z3, int _x4, int _y4, int _z4, int _x5, int _y5, int _z5, int _x6, int _y6, int _z6, int _x7, int _y7, int _z7, int _x8, int _y8, int _z8) {
+
+Shape::Shape(int _x1, int _y1, int _x2, int _y2, type _sh_t) {
+	setPoint(Point(_x1, _y1), Point(_x2, _y2));
+	if (_sh_t == type::line) {
+		m_type = std::make_shared<Line>();
+	}
+	else {
+		m_type = std::make_shared<Sqr>();
+	}
+}
+
+Shape::Shape(int _x1, int _y1, int _z1, int _x2, int _y2, int _z2) {
+	setPoint(Point(_x1, _y1, _z1), Point(_x2, _y2, _z2));
+	m_type = std::make_shared<Cube>();
+}
+
+Shape::Shape(int _x1, int _y1, double R, double H) : m_radius(R), m_height(H) {
+	setPoint(Point(_x1, _y1));
+	if (m_height == 0) {
+		m_type = std::make_shared<Circle>();
+	}
+	else {
+		m_type = std::make_shared<Cylinder>();
+	}
+}
+
+void Shape::setPoint(Point _point_1, Point _point_2) {
+	m_point_1.x = _point_1.x;
+	m_point_1.y = _point_1.y;
+	m_point_1.z = _point_1.z;
+	m_point_2.x = _point_2.x;
+	m_point_2.y = _point_2.y;
+	m_point_2.z = _point_2.z;
+
+	m_side_a = abs(m_point_1.x - m_point_2.x);
+	m_side_b = abs(m_point_1.y - m_point_2.y);
+	m_side_c = abs(m_point_1.z - m_point_2.z);
+}
+
+int Shape::getType() const {
+	return static_cast<int>(m_type->getType());
+}
+
+double Shape::getArea() const {
+	return m_type->getArea(m_side_a, m_side_b, m_side_c, m_height, m_radius);
+}
+
+double Shape::getVolume() const {
+	return m_type->getVolume(m_side_a, m_side_b, m_side_c, m_height, m_radius);
+}
+
+int Shape::Line::getType() const {
+	return static_cast<int>(Shape::type::line);
+}
+
+double Shape::Line::getArea(const int a, const int b, const int c, double height, double radius) const {
+	return 0;
+}
+
+double Shape::Line::getVolume(const int a, const int b, const int c, double height, double radius) const {
+	return 0.0;
+}
+
+int Shape::Sqr::getType() const {
+	return static_cast<int>(Shape::type::sqr);
+}
+
+double Shape::Sqr::getArea(const int a, const int b, const int c, double height, double radius) const {
+	return a * b;
+}
+
+double Shape::Sqr::getVolume(const int a, const int b, const int c, double height, double radius) const {
+	return 0.0;
+}
+
+int Shape::Cube::getType() const {
+	return static_cast<int>(Shape::type::cube);
+}
+
+double Shape::Cube::getArea(const int a, const int b, const int c, double height, double radius) const {
+	return 2 * a * b + 2 * a * c + 2 * b * c;
+}
+
+double Shape::Cube::getVolume(const int a, const int b, const int c, double height, double radius) const {
+	return a * b * c;
+}
+
+int Shape::Circle::getType() const {
+	return static_cast<int>(Shape::type::circle);
+}
+
+double Shape::Circle::getArea(const int a, const int b, const int c, double height, double radius) const {
+	return M_PI * radius * radius;
+}
+
+double Shape::Circle::getVolume(const int a, const int b, const int c, double height, double radius) const {
+	return 0.0;
+}
+
+int Shape::Cylinder::getType() const {
+	return static_cast<int>(Shape::type::cylinder);
+}
+
+double Shape::Cylinder::getArea(const int a, const int b, const int c, double height, double radius) const {
+	return M_PI * radius * radius + 2 * radius * height;
+}
+
+double Shape::Cylinder::getVolume(const int a, const int b, const int c, double height, double radius) const {
+	return M_PI * radius * radius * height;
+}
+
+
+//#define _USE_MATH_DEFINES
+//#include"shape.h"
+//#include<cmath>
+//Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, int _x3, int _y3, int _z3, int _x4, int _y4, int _z4, int _x5, int _y5, int _z5, int _x6, int _y6, int _z6, int _x7, int _y7, int _z7, int _x8, int _y8, int _z8)
+//{
 //	type = _type;
-//
 //	// заполн¤ем координаты фигуры
-//	switch (type) {
-//	case line: 
+//	switch (type)
+//	{
+//	case line:
 //		x1 = _x1; y1 = _y1;
 //		x2 = _x2; y2 = _y2;
 //		break;
@@ -23,21 +139,21 @@
 //		x3 = _x3; y3 = _y3; z3 = _z3;
 //		x4 = _x4; y4 = _y4; z4 = _z4;
 //		x5 = _x5; y5 = _y5; z5 = _z5;
-//		x6 = _x6; y6 = _y6; z6 = _z6; 
+//		x6 = _x6; y6 = _y6; z6 = _z6;
 //		x7 = _x7; y7 = _y7; z7 = _z7;
 //		x8 = _x8; y8 = _y8; z8 = _z8;
 //		break;
 //	default:
 //		break;
 //	}
-//	
+//
 //	// стороны фигуры
 //	int a = abs(x1 - x2);
 //	int b = abs(y1 - y2);
 //	int c = abs(z1 - z2);
-//
 //	// считаем площадь фигуры
-//	switch (type) {
+//	switch (type)
+//	{
 //	case line:
 //		square = 0;
 //		break;
@@ -52,7 +168,8 @@
 //	}
 //
 //	// считаем объем фигуры
-//	switch (type) {
+//	switch (type)
+//	{
 //	case line:
 //		volume = 0;
 //		break;
@@ -67,22 +184,12 @@
 //	}
 //
 //}
-
-//Shape::Shape(std::initializer_list<Point>& _point) {
-//	verifyArguments(_point);
-//
-//	for (auto i = _point.begin(); i != _point.end(); ++i) {
-//		m_point.emplace_back(i);
-//	}
-//
-//	setType();
-//	setArea();
-//}
 //
 //Shape::Shape(int type, int _x1, int _y1, double R, double H)
 //{
 //	// заполн¤ем координаты фигуры
-//	switch (type) {
+//	switch (type)
+//	{
 //	case circle:
 //		x1 = _x1; y1 = _y1;
 //		radius = R;
@@ -97,7 +204,8 @@
 //	}
 //
 //	// считаем площадь фигуры
-//	switch (type) {
+//	switch (type)
+//	{
 //	case circle:
 //		square = M_PI * R * R;
 //		break;
@@ -109,7 +217,8 @@
 //	}
 //
 //	// считаем объем фигуры
-//	switch (type) {
+//	switch (type)
+//	{
 //	case circle:
 //		volume = 0;
 //		break;
@@ -119,64 +228,5 @@
 //	default:
 //		break;
 //	}
+//
 //}
-
-Shape::Shape(int _x1, int _y1, int _x2, int _y2, shape_type _sh_t) {
-	m_point.emplace_back(Point(_x1, _y1));
-	m_point.emplace_back(Point(_x2, _y2));
-	m_type = _sh_t;
-}
-
-Shape::Shape(int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, int _x3, int _y3, int _z3) {
-	m_point.emplace_back(Point(_x1, _y1, _z1));
-	m_point.emplace_back(Point(_x2, _y2, _z2));
-	m_point.emplace_back(Point(_x3, _y3, _z3));
-	m_type = shape_type::cube;
-}
-
-Shape::Shape(int _x1, int _y1, double R, double H) {
-	m_point.emplace_back(Point(_x1, _y1));
-	m_radius = R;
-	m_height = H;
-
-	if (m_height == 0) {
-		m_type = shape_type::cylinder;
-	}
-	else {
-		m_type = shape_type::circle;
-	}
-}
-
-double Shape::getArea() {
-	return 0.0;
-}
-
-double Line::getArea() {
-	//m_area = 0;
-	return 0;
-}
-
-double Sqr::getArea() {
-	int a = abs(m_point[0].m_x - m_point[1].m_x);
-	int b = abs(m_point[0].m_y - m_point[1].m_y);
-	//m_area = a * b;
-	return a * b;
-}
-
-double Cube::getArea() {
-	int a = abs(m_point[0].m_x - m_point[1].m_x);
-	int b = abs(m_point[0].m_y - m_point[1].m_y);
-	int c = abs(m_point[0].m_z - m_point[1].m_z);
-	//m_area = 2 * a * b + 2 * a * c + 2 * b * c;
-	return 2 * a * b + 2 * a * c + 2 * b * c;
-}
-
-double Circle::getArea() {
-	//m_area = M_PI * m_radius * m_radius;
-	return M_PI * m_radius * m_radius;
-}
-
-double Cylinder::getArea() {
-	//m_area = M_PI * m_radius * m_radius + 2 * m_radius * m_height;
-	return M_PI * m_radius * m_radius + 2 * m_radius * m_height;
-}

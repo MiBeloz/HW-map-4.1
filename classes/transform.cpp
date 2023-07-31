@@ -1,11 +1,76 @@
+﻿#include "transform.h"
+
+
+Shape transform::shift(const int m, const int n, const int k) {
+	if (shape.getType() == static_cast<int>(Shape::type::line)) {
+		shape.setPoint(Point(shape.get_x1() + m, shape.get_y1() + n));
+	}
+	else if (shape.getType() == static_cast<int>(Shape::type::sqr)) {
+		shape.setPoint(Point(shape.get_x1() + m, shape.get_y1() + n), Point(shape.get_x2() + m, shape.get_y2() + n));
+	}
+	else if (shape.getType() == static_cast<int>(Shape::type::cube)) {
+		shape.setPoint(Point(shape.get_x1() + m, shape.get_y1() + n, shape.get_z1() + k), Point(shape.get_x2() + m, shape.get_y2() + n, shape.get_z2() + k));
+	}
+
+	return shape;
+}
+
+Shape transform::scaleX(const int a) {
+	scaleXYZ(a, 1, 1);
+
+	return shape;
+}
+
+Shape transform::scaleY(const int d) {
+	scaleXYZ(1, d, 1);
+
+	return shape;
+}
+
+Shape transform::scaleZ(const int e) {
+	scaleXYZ(1, 1, e);
+
+	return shape;
+}
+
+Shape transform::scale(int s) {
+	if (shape.getType() == static_cast<int>(Shape::type::line)) {
+		shape.setPoint(Point(shape.get_x1() / s, shape.get_y1() / s));
+	}
+	else if (shape.getType() == static_cast<int>(Shape::type::sqr)) {
+		shape.setPoint(Point(shape.get_x1() / s, shape.get_y1() / s), Point(shape.get_x2() / s, shape.get_y2() / s));
+	}
+	else if (shape.getType() == static_cast<int>(Shape::type::cube)) {
+		shape.setPoint(Point(shape.get_x1() / s, shape.get_y1() / s, shape.get_z1() / s), Point(shape.get_x2() / s, shape.get_y2() / s, shape.get_z2() / s));
+	}
+
+	return shape;
+}
+
+void transform::scaleXYZ(const int a, const int d, const int e) {
+	if (shape.getType() == static_cast<int>(Shape::type::line)) {
+		shape.setPoint(Point(shape.get_x1() * a, shape.get_y1() * d));
+	}
+	else if (shape.getType() == static_cast<int>(Shape::type::sqr)) {
+		shape.setPoint(Point(shape.get_x1() * a, shape.get_y1() * d), Point(shape.get_x2() * a, shape.get_y2() * d));
+	}
+	else if (shape.getType() == static_cast<int>(Shape::type::cube)) {
+		shape.setPoint(Point(shape.get_x1() * a, shape.get_y1() * d, shape.get_z1() * e), Point(shape.get_x2() * a, shape.get_y2() * d, shape.get_z2() * e));
+	}
+}
+
+
 //#include "transform.h"
 //
-//transform::transform(const Shape& sh) {
+//transform::transform(const Shape& sh)
+//{
 //	shape = sh;
 //}
 //
-//Shape transform::shift(int m, int n, int k) {
-//	switch (shape.getType()) {
+//Shape transform::shift(int m, int n, int k)
+//{
+//	switch (shape.getType())
+//	{
 //	case Shape::line:
 //		shape.x1 += m; shape.y1 += n;
 //		shape.x2 += m; shape.y2 += n;
@@ -27,12 +92,13 @@
 //		shape.x8 += m; shape.y8 += n; shape.z8 += k;
 //		break;
 //	}
-//
 //	return shape;
 //}
 //
-//Shape transform::scaleX(int a) {
-//	switch (shape.getType()) {
+//Shape transform::scaleX(int a)
+//{
+//	switch (shape.getType())
+//	{
 //	case Shape::line:
 //		shape.x1 *= a;
 //		shape.x2 *= a;
@@ -54,12 +120,13 @@
 //		shape.x8 *= a;
 //		break;
 //	}
-//
 //	return shape;
 //}
 //
-//Shape transform::scaleY(int d) {
-//	switch (shape.getType()) {
+//Shape transform::scaleY(int d)
+//{
+//	switch (shape.getType())
+//	{
 //	case Shape::line:
 //		shape.y1 *= d;
 //		shape.y2 *= d;
@@ -81,12 +148,13 @@
 //		shape.y8 *= d;
 //		break;
 //	}
-//
 //	return shape;
 //}
 //
-//Shape transform::scaleZ(int e) {
-//	switch (shape.getType()) {
+//Shape transform::scaleZ(int e)
+//{
+//	switch (shape.getType())
+//	{
 //	case Shape::line:
 //		shape.z1 *= e;
 //		shape.z2 *= e;
@@ -108,12 +176,13 @@
 //		shape.z8 *= e;
 //		break;
 //	}
-//
 //	return shape;
 //}
 //
-//Shape transform::scale(int s) {
-//	switch (shape.getType()) {
+//Shape transform::scale(int s)
+//{
+//	switch (shape.getType())
+//	{
 //	case Shape::line:
 //		shape.x1 /= s; shape.y1 /= s;
 //		shape.x2 /= s; shape.y2 /= s;
@@ -138,7 +207,3 @@
 //
 //	return shape;
 //}
-
-#include "transform.h"
-
-
